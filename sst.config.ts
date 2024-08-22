@@ -9,44 +9,44 @@ export default $config({
     };
   },
   async run() {
-    const table = new sst.aws.Dynamo("MyTable", {
+    const table = new sst.aws.Dynamo("Greetings", {
       fields: {
         id: "string",
+        createdAt: "number",
+        updatedAt: "number",
       },
       primaryIndex: { hashKey: "id" },
+      globalIndexes: {
+        CreatedAtIndex: { hashKey: "id", rangeKey: "createdAt" },
+        UpdatedAtIndex: { hashKey: "id", rangeKey: "updatedAt" },
+      },
+
       stream: "new-and-old-images",
     });
 
-    const table2 = new sst.aws.Dynamo("test", {
-      fields: {
-        id: "string",
-      },
-      primaryIndex: { hashKey: "id" },
-      stream: "NEW_AND_OLD_IMAGES",
-    });
-
-    const getItems = new sst.aws.Function("MyApi", {
-      handler: "lambda.handler",
-      link: [table, table2],
-      url: true,
-    });
-
-    const deleteItem = new sst.aws.Function("DeleteItem", {
-      handler: "delete.handler",
+    const getItems = new sst.aws.Function("GetAllItems", {
+      handler: "src/functions/get-all.handler",
       link: [table],
       url: true,
     });
 
-    const publisher = new sst.aws.Function("MyApp", {
-      handler: "publisher.handler",
+    const deleteItem = new sst.aws.Function("DeleteItem", {
+      handler: "src/functions/delete.handler",
+      link: [table],
+      url: true,
+    });
+
+    const publisher = new sst.aws.Function("CreateItem", {
+      handler: "src/functions/create.handler",
       link: [table],
       url: true,
     });
 
     return {
-      items: getItems.url,
-      publish: publisher.url,
+      getAll: getItems.url,
+      create: publisher.url,
       delete: deleteItem.url,
+      table: table.name,
     };
   },
 });

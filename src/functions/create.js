@@ -3,9 +3,11 @@ import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 const client = new DynamoDBClient();
 
 export const handler = async (event) => {
+  console.log(Resource);
+
   await client.send(
     new PutItemCommand({
-      TableName: Resource.MyTable.name,
+      TableName: Resource.Greetings.name,
       Item: {
         id: { S: Date.now().toString() },
         message: { S: "Hello" },

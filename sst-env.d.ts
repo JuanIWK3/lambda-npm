@@ -3,26 +3,22 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
+    "CreateItem": {
+      "name": string
+      "type": "sst.aws.Function"
+      "url": string
+    }
     "DeleteItem": {
       "name": string
       "type": "sst.aws.Function"
       "url": string
     }
-    "MyApi": {
+    "GetAllItems": {
       "name": string
       "type": "sst.aws.Function"
       "url": string
     }
-    "MyApp": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
-    "MyTable": {
-      "name": string
-      "type": "sst.aws.Dynamo"
-    }
-    "test": {
+    "Greetings": {
       "name": string
       "type": "sst.aws.Dynamo"
     }
