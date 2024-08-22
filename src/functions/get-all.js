@@ -10,7 +10,7 @@ const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
 export const handler = async (event) => {
-  console.log(event);
+  console.log({ env: process.env });
 
   if (event.queryStringParameters && event.queryStringParameters.id) {
     const command = new GetCommand({

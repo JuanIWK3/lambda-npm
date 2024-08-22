@@ -15,7 +15,7 @@ export default $config({
         createdAt: "number",
         updatedAt: "number",
       },
-      primaryIndex: { hashKey: "id" },
+      primaryIndex: {},
       globalIndexes: {
         CreatedAtIndex: { hashKey: "id", rangeKey: "createdAt" },
         UpdatedAtIndex: { hashKey: "id", rangeKey: "updatedAt" },
@@ -28,18 +28,21 @@ export default $config({
       handler: "src/functions/get-all.handler",
       link: [table],
       url: true,
+      architecture: "arm64",
     });
 
     const deleteItem = new sst.aws.Function("DeleteItem", {
       handler: "src/functions/delete.handler",
       link: [table],
       url: true,
+      architecture: "arm64",
     });
 
     const publisher = new sst.aws.Function("CreateItem", {
       handler: "src/functions/create.handler",
       link: [table],
       url: true,
+      architecture: "arm64",
     });
 
     return {
